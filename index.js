@@ -1,6 +1,6 @@
-const express = require("express");
-
 require("./db/mongoose");
+
+const express = require("express");
 
 const authRouter = require("./routers/authRoutes");
 

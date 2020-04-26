@@ -105,3 +105,6 @@ dist
 
 # mongodb URL file
 mongoURL.js
+
+# Salt file for password salting
+salt.js

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const mongoURL = require('./mongoURL')
+const mongoURL = require('./mongoURL') //hidden
 
 mongoose.connect(mongoURL, {
   useNewUrlParser: true,
