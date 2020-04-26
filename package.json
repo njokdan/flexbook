@@ -21,10 +21,14 @@
     "bcrypt": "^4.0.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "moment": "^2.24.0",
     "mongoose": "^5.9.10",
+    "uid": "^1.0.0",
     "validator": "^13.0.0"
   },
   "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
     "jest": "^25.4.0"
   }
 }

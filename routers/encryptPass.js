@@ -1,3 +1,7 @@
+/* 
+This file should be hidden from public as it contains both salt and the secret key for token generation.
+*/
+
 const bcrypt = require('bcrypt');
 
 const salt = '$2b$10$sbR90pvCTCpM5HspdS5yxu';

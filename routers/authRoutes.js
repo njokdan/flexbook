@@ -1,43 +1,46 @@
 const User = require("../db/models/User");
 
-const validator = require('validator')
+const validator = require("validator");
 const express = require("express");
 const jwt = require("jsonwebtoken");
 
-const [encryptPass, secret_key] = require('./encryptPass')
-
+const [encryptPass, secret_key] = require("./encryptPass");
 
 const router = new express.Router();
 
-
 router.post("/signup", async (req, res) => {
-/* User sign up endpoint */
+  /* User sign up endpoint */
 
-  const { email, password } = req.body;
+  const { email, password, name } = req.body;
 
-  if (!validator.isLength(password, {min : 6})) {
-    return res.status(422).send({ error: "Password must be 6 characters or more" });
+  if (!validator.isLength(password, { min: 6 })) {
+    return res
+      .status(422)
+      .send({ error: "Password must be 6 characters or more" });
   }
 
   try {
-    const user = new User({ email, password : await encryptPass(password) });
-
-    await user.save();
+    const user = new User({
+      email,
+      password: await encryptPass(password),
+      name,
+    });
 
     const token = jwt.sign({ userId: user._id }, secret_key);
 
     user.token = token;
 
-    await user.save()
+    await user.save();
 
     res.send({ token });
-
   } catch (err) {
     return res.status(422).send(err.message);
   }
 });
 
 router.post("/signin", async (req, res) => {
+  /* User sign in endpoint */
+
   const { email, password } = req.body;
 
   if (!email || !password) {
@@ -50,19 +53,16 @@ router.post("/signin", async (req, res) => {
     return res.status(422).send({ error: "Invalid password or email" });
   }
 
-  if (await encryptPass(password) === user.password) {
-
+  if ((await encryptPass(password)) === user.password) {
     if (!user.token) {
-        const token = jwt.sign({ userId: user._id }, secret_key);
-        user.token = token;
-        
-        await user.save()
-        res.send({ token });
+      const token = jwt.sign({ userId: user._id }, secret_key);
+      user.token = token;
 
+      await user.save();
+      res.send({ token });
     }
 
-    res.send({ token : user.token })
-
+    res.send({ token: user.token });
   } else {
     return res.status(422).send({ error: "Invalid password or email" });
   }
