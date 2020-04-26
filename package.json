@@ -1,0 +1,28 @@
+{
+  "name": "blackbook",
+  "version": "1.0.0",
+  "description": "A social media platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest",
+    "dev" : "nodemon ./index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arieller/blackbook.git"
+  },
+  "author": "Ariel Rojnikovski",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/arieller/blackbook/issues"
+  },
+  "homepage": "https://github.com/arieller/blackbook#readme",
+  "dependencies": {
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.10"
+  },
+  "devDependencies": {
+    "jest": "^25.4.0"
+  }
+}
