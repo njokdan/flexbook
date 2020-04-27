@@ -21,7 +21,7 @@ router.post("/signup", async (req, res) => {
 
   try {
     const user = new User({
-      email,
+      email: email.toLowerCase(),
       password: await encryptPass(password),
       name,
     });
@@ -48,7 +48,7 @@ router.post("/signin", async (req, res) => {
       return res.status(422).send({ error: "Must provide email and password" });
     }
 
-    const user = await User.findOne({ email });
+    const user = await User.findOne({ email: email.toLowerCase() });
 
     if (!user) {
       return res.status(422).send({ error: "Invalid password or email" });

@@ -11,7 +11,7 @@ const profilePageSchema = new mongoose.Schema({
         headline: String,
         body_text: String,
         createdAt: String,
-        createBy: String,
+        createdBy: String,
         uniq_id: String, //used to identify the post in the db (a part of the link)
       },
     ],
