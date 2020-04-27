@@ -3,8 +3,15 @@ A social media platform with robust features
 
 Uses:
 * express.js
-* mongodb
-* other helper libs
+* helmet
+* moment
+* uid
+* cookieParser
+* mongoose
+* hpp
+* cors
+* dotenv
+
 
 Database:
 * User model
