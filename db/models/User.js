@@ -29,8 +29,17 @@ const userSchema = new mongoose.Schema({
   userProfile: {
     type: String,
     trim: true,
+    unique: true,
   },
   profilePicture: {
+    type: String,
+    trim: true,
+  },
+  createdAt: {
+    type: String,
+    trim: true,
+  },
+  updatedAt: {
     type: String,
     trim: true,
   },
@@ -46,7 +55,7 @@ userSchema.pre("save", async function (next) {
   next();
 });
 
-userSchema.post("save", async function (next) {
+userSchema.post("save", async function () {
   const user = this;
 
   const page = new ProfilePage({

@@ -3,6 +3,8 @@ const User = require("../db/models/User");
 const validator = require("validator");
 const express = require("express");
 const jwt = require("jsonwebtoken");
+const uid = require("uid");
+const moment = require("moment");
 
 const [encryptPass, secret_key] = require("./encryptPass");
 
@@ -24,6 +26,8 @@ router.post("/signup", async (req, res) => {
       email: email.toLowerCase(),
       password: await encryptPass(password),
       name,
+      userProfile: uid(),
+      createdAt: moment().format("dddd, MMMM Do YYYY, H:mm:ss"),
     });
 
     const token = jwt.sign({ userId: user._id }, secret_key);

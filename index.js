@@ -8,7 +8,8 @@ const helmet = require("helmet");
 const hpp = require("hpp");
 
 const authRouter = require("./routers/authRoutes");
-const createContentRouter = require("./routers/createContentRoutes");
+const createContentRouter = require("./routers/textPostsRoutes");
+const userProfileRouter = require("./routers/userProfileRoutes");
 
 const app = express();
 
@@ -34,6 +35,7 @@ app.use(function (error, req, res, next) {
 
 app.use(authRouter);
 app.use(createContentRouter);
+app.use(userProfileRouter);
 
 app.disable("x-powered-by");
 

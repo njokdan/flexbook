@@ -214,7 +214,7 @@ router.delete("/:link/:postId", async (req, res) => {
   }
 });
 
-router.put("/:link/:postId", async (req, res) => {
+router.put("/updatepost/:link/:postId", async (req, res) => {
   /* 
   endpoint for UPDATING a single post on a user's wall, the identifir for the original poster in the db is the token because it's unique for every user.
   the identifier for the original poster in the textPosts array is the _id in mongodb (also because it's unique for each user) 
@@ -318,6 +318,77 @@ router.put("/:link/:postId", async (req, res) => {
   } catch (e) {
     res.status(500).send("Error updating post");
   }
+});
+
+router.get("/:link/:postId", async (req, res) => {
+  /* 
+  endpoint for Getting a specific post
+    */
+
+  try {
+    //checking for existance and validity of token
+    if (!req.headers.authorization || !req.params.link || !req.params.postId) {
+      //(if token exists at all AND if link is inserted in parameters AND if id is inserted in paramters)
+      return res.status(404).send("404 Not found");
+    }
+
+    const link = req.params.link.toString();
+    const postId = req.params.postId.toString();
+
+    const profilePage = await ProfilePage.findOne(
+      { link },
+      "_id, textPosts",
+      (err, profile) => {
+        if (!profile) {
+          return;
+        }
+      }
+    );
+
+    if (!profilePage) {
+      res.status(500).send("didnt find profile page");
+      return;
+    }
+
+    // Find the post
+
+    const requestedPost = profilePage.textPosts.find((post) => {
+      if (post.uniq_id === postId) {
+        return post;
+      }
+    });
+
+    if (!requestedPost) {
+      return res.status(500).send("didnt find requested post");
+    }
+
+    return res.status(200).send(requestedPost);
+  } catch (e) {
+    return res.status(404).send("Not found");
+  }
+});
+
+router.get("/:wallLink", async (req, res) => {
+  /* returns wall assets such as posts etc. */
+
+  const wallLink = req.params.wallLink.toString();
+
+  const profilePage = await ProfilePage.findOne(
+    { link: wallLink },
+    "ownedBy, textPosts",
+    (err, profile) => {
+      if (!profile) {
+        return;
+      }
+    }
+  );
+
+  if (!profilePage) {
+    res.status(500).send("didnt find profile page");
+    return;
+  }
+
+  return res.status(200).send(profilePage);
 });
 
 module.exports = router;
