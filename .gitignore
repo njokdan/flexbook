@@ -108,3 +108,6 @@ mongoURL.js
 
 # Salt file for password salting
 salt.js
+
+# env file
+.env

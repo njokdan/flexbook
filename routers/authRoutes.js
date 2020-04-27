@@ -41,30 +41,38 @@ router.post("/signup", async (req, res) => {
 router.post("/signin", async (req, res) => {
   /* User sign in endpoint */
 
-  const { email, password } = req.body;
+  try {
+    const { email, password } = req.body;
 
-  if (!email || !password) {
-    return res.status(422).send({ error: "Must provide email and password" });
-  }
-
-  const user = await User.findOne({ email });
-
-  if (!user) {
-    return res.status(422).send({ error: "Invalid password or email" });
-  }
-
-  if ((await encryptPass(password)) === user.password) {
-    if (!user.token) {
-      const token = jwt.sign({ userId: user._id }, secret_key);
-      user.token = token;
-
-      await user.save();
-      res.send({ token });
+    if (!email || !password) {
+      return res.status(422).send({ error: "Must provide email and password" });
     }
 
-    res.send({ token: user.token });
-  } else {
-    return res.status(422).send({ error: "Invalid password or email" });
+    const user = await User.findOne({ email });
+
+    if (!user) {
+      return res.status(422).send({ error: "Invalid password or email" });
+    }
+
+    if ((await encryptPass(password)) === user.password) {
+      if (!user.token) {
+        const token = jwt.sign({ userId: user._id }, secret_key);
+        user.token = token;
+
+        await user.save();
+        res.cookie("blackbook", token, {
+          maxAge: 900000,
+          httpOnly: true, // check with front end // // check with front end //// check with front end //// check with front end //// check with front end //
+        });
+        res.send({ token });
+      }
+
+      res.send({ token: user.token });
+    } else {
+      return res.status(422).send({ error: "Invalid password or email" });
+    }
+  } catch (e) {
+    res.status(404).send("An error occured");
   }
 });
 

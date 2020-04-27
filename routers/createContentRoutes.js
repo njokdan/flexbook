@@ -7,7 +7,7 @@ const uid = require("uid");
 
 const router = new express.Router();
 
-router.put("/:link/postText", async (req, res) => {
+router.post("/:link/postText", async (req, res) => {
   /* 
   endpoint for posting on a user profile page, the identifir for the original poster in the db is the token because it's unique for every user.
   the identifier for the original poster in the textPosts array is the _id in mongodb (also because it's unique for each user) 
@@ -20,14 +20,16 @@ router.put("/:link/postText", async (req, res) => {
   const token = req.headers.authorization.replace("Bearer", "");
   const link = req.params.link;
 
-  let profileExists;
+  // making sure that the post indeed exists in the db before saving
 
-  const check = await ProfilePage.findOne({ link }, (err, profile) => {
-    if (!profile) {
-      profileExists = false;
-      return;
+  const check = await ProfilePage.findOne(
+    { link: link.toString() },
+    (err, profile) => {
+      if (!profile) {
+        return;
+      }
     }
-  });
+  );
 
   if (!check) {
     res.status(500).send("not found");
@@ -48,7 +50,7 @@ router.put("/:link/postText", async (req, res) => {
         $push: {
           textPosts: {
             headline: req.body.headline,
-            text: req.body.text,
+            body_text: req.body.text,
             createdAt: moment(),
             createBy: original_poster._id,
             uniq_id: uid(),
@@ -70,6 +72,58 @@ router.put("/:link/postText", async (req, res) => {
       });
   } catch (e) {
     return res.status(400).send("Can't post.");
+  }
+});
+
+router.delete("/:link/postText", async (req, res) => {
+  //checking for existance and validity of token (if exists)
+
+  if (!req.headers.authorization) {
+    return res.status(404).send("404 Not found");
+  }
+
+  const token = req.headers.authorization.replace("Bearer", "");
+
+  try {
+    const check = await User.findOne(
+      { link: link.toString() },
+      (err, profile) => {
+        if (!profile) {
+          return;
+        }
+      }
+    );
+
+    if (!check) {
+      res.status(500).send("not found");
+      return;
+    }
+  } catch (e) {
+    res.status(500).send("not found");
+  }
+
+  if (!req.param.link) {
+    return res.status(404).send("404 Not found");
+  }
+
+  const link = req.params.link;
+
+  try {
+    const check = await ProfilePage.findOne(
+      { link: link.toString() },
+      (err, profile) => {
+        if (!profile) {
+          return;
+        }
+      }
+    );
+
+    if (!check) {
+      res.status(500).send("not found");
+      return;
+    }
+  } catch (e) {
+    return res.status(404).send("404 Not found");
   }
 });
 
