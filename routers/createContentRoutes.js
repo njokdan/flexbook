@@ -68,7 +68,8 @@ router.post("/:link/postText", async (req, res) => {
           textPosts: {
             headline: req.body.headline,
             body_text: req.body.text,
-            createdAt: moment(),
+            createdAt: moment().format("dddd, MMMM Do YYYY, H:mm:ss"),
+            lastUpdate: moment().format("dddd, MMMM Do YYYY, H:mm:ss"),
             createdBy: original_poster._id,
             uniq_id: uid(),
           },
@@ -110,25 +111,32 @@ router.delete("/:link/:postId", async (req, res) => {
 
   // check if token exists in db and fetch the user
   try {
-    const requestingUser = await User.findOne({ token }, (err, profile) => {
-      //should return only ._id
-      if (!profile) {
-        return;
+    const requestingUser = await User.findOne(
+      { token },
+      "_id",
+      (err, profile) => {
+        if (!profile) {
+          return;
+        }
       }
-    });
+    );
 
     if (!requestingUser) {
-      res.status(500).send("didnt find user via token");
+      res.status(500).send("User does not exist");
       return;
     }
 
     // If User found, fetch the profilepage via link in paramters
 
-    const profilePage = await ProfilePage.findOne({ link }, (err, profile) => {
-      if (!profile) {
-        return;
+    const profilePage = await ProfilePage.findOne(
+      { link },
+      "_id, textPosts",
+      (err, profile) => {
+        if (!profile) {
+          return;
+        }
       }
-    });
+    );
 
     if (!profilePage) {
       res.status(500).send("didnt find profile page");
@@ -203,6 +211,112 @@ router.delete("/:link/:postId", async (req, res) => {
     }
   } catch (e) {
     res.status(500).send("Error deleting post");
+  }
+});
+
+router.put("/:link/:postId", async (req, res) => {
+  /* 
+  endpoint for UPDATING a single post on a user's wall, the identifir for the original poster in the db is the token because it's unique for every user.
+  the identifier for the original poster in the textPosts array is the _id in mongodb (also because it's unique for each user) 
+  */
+
+  if (!req.body.body_text && !req.body.headline) {
+    return res.status(400).send("Changes not specified");
+  }
+
+  //checking for existance and validity of token
+  if (!req.headers.authorization || !req.params.link || !req.params.postId) {
+    //(if token exists at all AND if link is inserted in parameters AND if id is inserted in paramters)
+    return res.status(404).send("404 Not found");
+  }
+
+  const token = req.headers.authorization.replace("Bearer", "");
+  const link = req.params.link.toString();
+  const postId = req.params.postId.toString();
+
+  let updates = {
+    "textPosts.$.lastUpdate": moment().format("dddd, MMMM Do YYYY, H:mm:ss"),
+  };
+
+  if (req.body.headline) {
+    updates = {
+      ...updates,
+      "textPosts.$.headline": req.body.headline.toString(),
+    };
+  }
+
+  if (req.body.body_text) {
+    updates = {
+      ...updates,
+      "textPosts.$.body_text": req.body.body_text.toString(),
+    };
+  }
+
+  // check if token exists in db and fetch the user
+  try {
+    const requestingUser = await User.findOne({ token }, (err, profile) => {
+      //should return only ._id
+      if (!profile) {
+        return;
+      }
+    });
+
+    if (!requestingUser) {
+      res.status(500).send("User does not exist");
+      return;
+    }
+
+    // If User found, fetch the profilepage via link in paramters
+
+    const profilePage = await ProfilePage.findOne({ link }, (err, profile) => {
+      if (!profile) {
+        return;
+      }
+    });
+
+    if (!profilePage) {
+      res.status(500).send("didnt find profile page");
+      return;
+    }
+
+    // Find the post to update
+
+    const requestedPost = profilePage.textPosts.find((post) => {
+      if (post.uniq_id === postId) {
+        return post;
+      }
+    });
+
+    if (!requestedPost) {
+      return res.status(500).send("didnt find requested post");
+    }
+
+    // If the specified post found, check if the user found attached to token, is the original poster
+
+    if (requestingUser._id.toString() === requestedPost.createdBy) {
+      ProfilePage.findOneAndUpdate(
+        { "textPosts.uniq_id": postId },
+        {
+          $set: updates,
+        }
+      )
+        .then(() => {
+          return res.status(201).json({
+            status: "Success",
+            message: "Resources updated Successfully ",
+          });
+        })
+        .catch(() => {
+          return res.status(500).json({
+            status: "Failed",
+            message: "Error",
+          });
+        });
+    } else {
+      return res.status(500).send("Forbidden");
+    }
+  } catch (e) {
+    res.status(500).send("Error updating post");
   }
 });
 

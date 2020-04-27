@@ -5,6 +5,10 @@ const profilePageSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  ownedByUser: {
+    type: String,
+    required: true,
+  },
   textPosts: {
     type: [
       {
@@ -12,6 +16,7 @@ const profilePageSchema = new mongoose.Schema({
         body_text: String,
         createdAt: String,
         createdBy: String,
+        lastUpdate: String,
         uniq_id: String, //used to identify the post in the db (a part of the link)
       },
     ],
