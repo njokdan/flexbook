@@ -76,8 +76,12 @@ router.post("/:link/postText", async (req, res) => {
 });
 
 router.delete("/:link/postText", async (req, res) => {
-  //checking for existance and validity of token (if exists)
+  /* 
+  endpoint for deleting a single post on a user's wall, the identifir for the original poster in the db is the token because it's unique for every user.
+  the identifier for the original poster in the textPosts array is the _id in mongodb (also because it's unique for each user) 
+  */
 
+  //checking for existance and validity of token (if exists)
   if (!req.headers.authorization) {
     return res.status(404).send("404 Not found");
   }
