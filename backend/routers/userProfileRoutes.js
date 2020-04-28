@@ -1,8 +1,6 @@
 const User = require("../db/models/User");
 
-const moment = require("moment");
 const express = require("express");
-const uid = require("uid");
 
 const router = new express.Router();
 
@@ -37,7 +35,6 @@ router.put("/userprofileupdate/:userProfileId/update", async (req, res) => {
   /* 
     endpoint for updating user profile info such:
     name
-    
 */
 
   //check token validity
