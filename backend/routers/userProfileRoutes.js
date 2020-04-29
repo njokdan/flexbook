@@ -31,7 +31,7 @@ router.get("/:profileId", async (req, res) => {
   res.status(200).send(userProfile);
 });
 
-router.put("/userprofileupdate/:userProfileId/update", async (req, res) => {
+router.put("/userprofileupdate/:userProfileId", async (req, res) => {
   /* 
     endpoint for updating user profile info such:
     name

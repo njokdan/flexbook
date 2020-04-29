@@ -10,6 +10,38 @@ const [encryptPass, secret_key] = require("./encryptPass");
 
 const router = new express.Router();
 
+router.get("/tokenBasedProfileCheck", async (req, res) => {
+  try {
+    if (!req.cookies.blackbook) {
+      return res.status(422).send("error");
+    }
+
+    let profileFound;
+
+    const userProfile = await User.findOne(
+      { token: req.cookies.blackbook },
+      "_id, name",
+      (err, profile) => {
+        if (!profile) {
+          profileFound = false;
+        } else {
+          profileFound = true;
+        }
+      }
+    );
+
+    if (!profileFound) {
+      return res.status(422).send("Not found");
+    }
+
+    return res.status(200).send("Signed in." + userProfile);
+
+    // return res.status(200).send("nice");
+  } catch (e) {
+    return res.status(422).send("error");
+  }
+});
+
 router.post("/signup", async (req, res) => {
   /* User sign up endpoint */
 

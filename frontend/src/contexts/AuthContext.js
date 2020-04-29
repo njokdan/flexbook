@@ -3,42 +3,47 @@ import serverApi from "../api/server";
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case "ADD_ERROR": {
-      return { ...state, errorMessage: action.payload };
-    }
-    case "SIGNIN":
-      return { errorMessage: "", token: action.payload };
+    case "SET_ERRROR":
+      return { error: action.payload };
     case "CLEAR_ERROR":
-      return { ...state, errorMessage: "" };
-    case "SIGNOUT":
-      return { errorMessage: "", token: null };
+      return { error: "" };
     default:
       return state;
   }
 };
 
-const clearErrorMessage = (dispatch) => () => dispatch({ type: "CLEAR_ERROR" });
-
-const tryLocalSignin = (dispatch) => async (req) => {
-    
-  if (token) {
-    dispatch({ type: "SIGNIN", payload: token });
-    navigate("Shop");
-  } else {
-    navigate("Welcome");
+const signup = (dispatch) => async ({ email, password, name }) => {
+  try {
+    await serverApi.post("/signup", { email, password, name });
+    dispatch({
+      type: "CLEAR_ERROR",
+      payload: "",
+    });
+  } catch (err) {
+    dispatch({
+      type: "ADD_ERROR",
+      payload: "Something went wrong with sign up",
+    });
   }
 };
 
-const signup = (dispatch) => async ({ email, password }) => {
+const tryLocalSignIn = (dispatch) => async () => {
+  console.log("fired");
+
   try {
-    const response = await shoppyApi.post("/signup", { email, password });
-    // await AsyncStorage.setItem('token', response.data.token);
+    await serverApi.get("/tokenBasedProfileCheck");
+  } catch (e) {
+    console.log("Can't sign in automatically.");
+  }
+};
+
+const signin = (dispatch) => async ({ email, password }) => {
+  try {
+    await serverApi.post("/signin", { email, password });
     dispatch({
-      type: "SIGNUP",
-      payload: response.data.token,
+      type: "CLEAR_ERROR",
+      payload: "",
     });
-    clearErrorMessage();
-    navigate("Shop");
   } catch (err) {
     dispatch({
       type: "ADD_ERROR",
@@ -48,28 +53,27 @@ const signup = (dispatch) => async ({ email, password }) => {
 };
 
 const signout = (dispatch) => async () => {
-  //   await AsyncStorage.removeItem('token');
-  dispatch({ type: "SIGNOUT" });
-  navigate("Welcome");
-};
-
-const signin = (dispatch) => async ({ email, password }) => {
   try {
-    const response = await shoppyApi.post("/signin", { email, password });
-    // await AsyncStorage.setItem('token', response.data.token);
-    dispatch({ type: "SIGNIN", payload: response.data.token });
-    clearErrorMessage();
-    navigate("Shop");
-  } catch (error) {
+    await serverApi.get("/signout");
+    dispatch({
+      type: "CLEAR_ERROR",
+      payload: "",
+    });
+  } catch (err) {
     dispatch({
       type: "ADD_ERROR",
-      payload: "Something went wrong with sign in",
+      payload: "Something went wrong with signing out",
     });
   }
 };
 
 export const { Provider, Context } = createDataContext(
   authReducer,
-  { signin, signout, signup, clearErrorMessage, tryLocalSignin },
-  { token: null, errorMessage: "" }
+  {
+    signup,
+    signin,
+    signout,
+    tryLocalSignIn,
+  },
+  { error: "" }
 );

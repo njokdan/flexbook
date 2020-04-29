@@ -23,7 +23,11 @@ app.use(hpp());
 app.use(cookieParser());
 app.use(
   cors({
-    origin: [`${process.env.LOCAL_LINK}`], //test env
+    origin: [
+      `${process.env.LOCAL_LINK}`,
+      `http://127.0.0.1:9000`,
+      `http://localhost:3000`,
+    ], //test env
     credentials: true,
   })
 );
