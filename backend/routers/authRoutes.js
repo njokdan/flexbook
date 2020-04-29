@@ -15,6 +15,10 @@ router.post("/signup", async (req, res) => {
 
   const { email, password, name } = req.body;
 
+  if (!email || !password || !name) {
+    return res.status(422).send({ error: "Missing credentials" });
+  }
+
   if (!validator.isLength(password, { min: 6 })) {
     return res
       .status(422)
@@ -36,7 +40,14 @@ router.post("/signup", async (req, res) => {
 
     await user.save();
 
-    res.send({ token });
+    res
+      .cookie("blackbook", token, {
+        maxAge: Date.now() + 900000,
+        sameSite: true,
+        httpOnly: true,
+      })
+      .status(200)
+      .send("Success");
   } catch (err) {
     return res.status(422).send("User already exists.");
   }
@@ -64,20 +75,34 @@ router.post("/signin", async (req, res) => {
         user.token = token;
 
         await user.save();
-        res.cookie("blackbook", token, {
-          maxAge: 900000,
-          httpOnly: true, // check with front end // // check with front end //// check with front end //// check with front end //// check with front end //
-        });
-        res.send({ token });
+        res
+          .cookie("blackbook", token, {
+            maxAge: Date.now() + 900000,
+            sameSite: true,
+            httpOnly: true,
+          })
+          .status(200)
+          .send("Success");
       }
 
-      res.send({ token: user.token });
+      res
+        .cookie("blackbook", user.token, {
+          maxAge: Date.now() + 900000,
+          sameSite: true,
+          httpOnly: true,
+        })
+        .status(200)
+        .send("Success");
     } else {
       return res.status(422).send({ error: "Invalid password or email" });
     }
   } catch (e) {
     res.status(404).send("An error occured");
   }
+});
+
+router.get("/signout", (req, res) => {
+  res.clearCookie("blackbook").status(200).send("Ok");
 });
 
 module.exports = router;
