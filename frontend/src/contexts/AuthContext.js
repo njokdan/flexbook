@@ -19,8 +19,8 @@ const authReducer = (state, action) => {
 
 const clearErrorMessage = (dispatch) => () => dispatch({ type: "CLEAR_ERROR" });
 
-const tryLocalSignin = (dispatch) => async () => {
-  //   const token = await AsyncStorage.getItem('token');
+const tryLocalSignin = (dispatch) => async (req) => {
+    
   if (token) {
     dispatch({ type: "SIGNIN", payload: token });
     navigate("Shop");
