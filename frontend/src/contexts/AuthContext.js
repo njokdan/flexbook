@@ -3,7 +3,7 @@ import serverApi from "../api/server";
 
 const authReducer = (state, action) => {
   switch (action.type) {
-    case "SET_ERRROR":
+    case "SET_ERROR":
       return { error: action.payload };
     case "CLEAR_ERROR":
       return { error: "" };
