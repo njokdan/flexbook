@@ -1,5 +1,5 @@
 # blackbook
-A MERN fullstack social media platform with robust features
+A MERN fullstack social media platform with robust features -unfinished
 
 Uses:
 * express.js
