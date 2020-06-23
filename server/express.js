@@ -12,8 +12,8 @@ import path from "path";
 
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
+import clientRoutes from "./routes/client.routes";
 import config from "../config/config";
-import HTML_template from "./../HTML_template";
 
 const CURRENT_WORKING_DIR = process.cwd();
 
@@ -34,9 +34,8 @@ app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
 app.use("/", userRoutes);
 app.use("/", authRoutes);
 
-app.get("^/$", (req, res) => {
-  res.status(200).send(HTML_template());
-});
+// Server side rendering routes
+app.use("/", clientRoutes);
 
 /* 
 Auth error handling.
