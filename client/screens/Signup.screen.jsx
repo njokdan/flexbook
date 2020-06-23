@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { create } from "../api/user.api";
 import { Link } from "react-router-dom";
 
-export default function Signup() {
+export default () => {
   const [values, setValues] = useState({
     name: "",
     password: "",
@@ -16,6 +16,15 @@ export default function Signup() {
   };
 
   const clickSubmit = () => {
+    if (
+      values.email === "" ||
+      values.password === "" ||
+      values.password === ""
+    ) {
+      setValues({ ...values, error: "Please fill in all the fields" });
+      return;
+    }
+
     const user = {
       name: values.name || undefined,
       email: values.email || undefined,
@@ -57,4 +66,4 @@ export default function Signup() {
       </Link>
     </div>
   );
-}
+};
