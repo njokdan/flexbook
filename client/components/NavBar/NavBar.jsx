@@ -8,7 +8,7 @@ const isActive = (history, path) => {
 };
 const Navbar = withRouter(({ history }) => (
   <div>
-    <h6>blackbook?</h6>
+    <h6>Users!</h6>
     <Link to="/">
       <button>home</button>
     </Link>

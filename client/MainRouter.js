@@ -18,8 +18,8 @@ const MainRouter = () => {
         <Route path="/signup" component={Signup} />
         <Route path="/signin" component={Signin} />
         <Route path="/users" component={Users} />
-        <Route path="/user/:userId" component={Profile} />
-        <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
+        <Route exact path="/user/:userId" component={Profile} />
+        <PrivateRoute exact path="/user/edit/:userId" component={EditProfile} />
       </Switch>
     </>
   );
