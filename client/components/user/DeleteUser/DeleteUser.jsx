@@ -35,7 +35,7 @@ export default function DeleteUser(props) {
     return <Redirect to="/" />;
   }
   return (
-    <span>
+    <div>
       <button onClick={clickButton}>Delete user</button>
 
       {open ? (
@@ -45,7 +45,7 @@ export default function DeleteUser(props) {
           <button onClick={deleteAccount}>Confirm</button>
         </div>
       ) : null}
-    </span>
+    </div>
   );
 }
 DeleteUser.propTypes = {

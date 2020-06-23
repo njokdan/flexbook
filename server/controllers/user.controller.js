@@ -65,13 +65,13 @@ const read = (req, res) => {
 
 // Updates a user
 const update = async (req, res) => {
+  console.log(req.body, req.profile);
   if (isEmpty(req.body)) {
     return res.status(400).json({
       error: "No updates specified.",
     });
   }
   try {
-    console.log(req.body);
     let user = req.profile;
     user = extend(user, req.body);
     user.updated = Date.now();
