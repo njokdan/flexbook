@@ -7,17 +7,21 @@ import Home from "./screens/Home.screen.jsx";
 import Users from "./screens/Users.screen.jsx";
 import EditProfile from "./screens/EditProfile.screen.jsx";
 import Profile from "./screens/Profile.screen.jsx";
+import Navbar from "./components/NavBar/NavBar.jsx";
 
 const MainRouter = () => {
   return (
-    <Switch>
-      <Route exact path="/" component={Home} />
-      <Route path="/signup" component={Signup} />
-      <Route path="/signin" component={Signin} />
-      <Route path="/users" component={Users} />
-      <Route path="/user/:userId" component={Profile} />
-      <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
-    </Switch>
+    <>
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route path="/signup" component={Signup} />
+        <Route path="/signin" component={Signin} />
+        <Route path="/users" component={Users} />
+        <Route path="/user/:userId" component={Profile} />
+        <PrivateRoute path="/user/edit/:userId" component={EditProfile} />
+      </Switch>
+    </>
   );
 };
 
