@@ -1,0 +1,18 @@
+{
+  "ignore": ["*.scss", "*.css"],
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          /*  instructs Babel to compile against the current
+              version of Node and allows us to use expressions such as async/await in our
+              backend code. */
+          "node": "current"
+        }
+      }
+    ],
+    "@babel/preset-react"
+  ],
+  "plugins": ["react-hot-loader/babel"]
+}

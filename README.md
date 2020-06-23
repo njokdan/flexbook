@@ -1,29 +1,7 @@
-# blackbook
-A MERN fullstack social media platform with robust features -unfinished
+## A social media app
 
-Uses:
-* express.js
-* helmet
-* moment
-* uid
-* cookieParser
-* mongoose
-* hpp
-* cors
-* dotenv
+# Scripts:
 
-
-Database:
-* User model
-* UserProfilePage model
-
-Endpoints:
-User action handlers:
-* Signup
-* Signin
-
-Posts action handlers:
-* Post and new text post with headline and body text on Profile page
-* Delete a post
-
-The program checks and validates the users all the time to prevent unwanted actions.
+- npm dev: This command will get Nodemon, Webpack, and the server started for development.
+- npm build: This will generate the client and server code bundles for production mode (comment out devBundle in server.js before building)
+- npm start: This command will run the bundled code in production.
