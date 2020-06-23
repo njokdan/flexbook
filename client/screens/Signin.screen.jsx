@@ -12,6 +12,11 @@ export default (props) => {
   });
 
   const clickSubmit = () => {
+    if (values.email === "" || values.password === "") {
+      setValues({ ...values, error: "Please fill in all the fields" });
+      return;
+    }
+
     const user = {
       email: values.email || undefined,
       password: values.password || undefined,
