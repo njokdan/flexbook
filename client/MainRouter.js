@@ -8,10 +8,19 @@ import Users from "./screens/Users.screen.jsx";
 import EditProfile from "./screens/EditProfile.screen.jsx";
 import Profile from "./screens/Profile.screen.jsx";
 import Navbar from "./components/NavBar/NavBar.jsx";
+import styled from "styled-components";
+
+const MainDiv = styled.div`
+  font-size: 1.5em;
+  text-align: center;
+  color: palevioletred;
+  padding: 4em;
+  background: papayawhip;
+`;
 
 const MainRouter = () => {
   return (
-    <>
+    <MainDiv>
       <Navbar />
       <Switch>
         <Route exact path="/" component={Home} />
@@ -21,7 +30,7 @@ const MainRouter = () => {
         <Route exact path="/user/:userId" component={Profile} />
         <PrivateRoute exact path="/user/edit/:userId" component={EditProfile} />
       </Switch>
-    </>
+    </MainDiv>
   );
 };
 

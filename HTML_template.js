@@ -1,4 +1,4 @@
-export default () => {
+export default ({ markup }) => {
   return `<!doctype html>
     <html lang="en">
     <head>
@@ -7,11 +7,12 @@ export default () => {
     <meta
     name="description"
     content="Template HTML for MERN stack apps"
-  />
+    />
     <title>Skeleton</title>
+    <base href="/" />
     </head>
     <body>
-    <div id="root"></div>
+    <div id="root">${markup}</div>
     <script type="text/javascript" src="/dist/bundle.js">
     </script>
     </body>
