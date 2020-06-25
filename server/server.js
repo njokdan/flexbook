@@ -1,6 +1,9 @@
 /* Server entry point */
 
+// SSR configuration is in client.routes.js
+
 require("dotenv").config();
+require("css.escape");
 
 import app from "./express";
 import config from "../config/config";

@@ -1,5 +1,6 @@
 import React from "react";
 import { Route, Switch } from "react-router-dom";
+import styled from "styled-components";
 import PrivateRoute from "./components/PrivateRoute";
 import Signin from "./screens/Signin.screen.jsx";
 import Signup from "./screens/Signup.screen.jsx";
@@ -8,14 +9,24 @@ import Users from "./screens/Users.screen.jsx";
 import EditProfile from "./screens/EditProfile.screen.jsx";
 import Profile from "./screens/Profile.screen.jsx";
 import Navbar from "./components/NavBar/NavBar.jsx";
-import styled from "styled-components";
 
 const MainDiv = styled.div`
+  font-family: sans-serif;
   font-size: 1.5em;
+  color: white;
+  background: rgb(0, 48, 73);
+  background: linear-gradient(
+    90deg,
+    rgba(0, 48, 73, 1) 22%,
+    rgba(0, 40, 61, 1) 63%
+  );
+  border-radius: 7px;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   text-align: center;
-  color: palevioletred;
-  padding: 4em;
-  background: papayawhip;
 `;
 
 const MainRouter = () => {
