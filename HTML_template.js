@@ -1,4 +1,4 @@
-export default ({ markup }) => {
+export default ({ markup, styleTags }) => {
   return `<!doctype html>
     <html lang="en">
     <head>
@@ -8,6 +8,7 @@ export default ({ markup }) => {
     name="description"
     content="Template HTML for MERN stack apps"
     />
+    ${styleTags}
     <title>Skeleton</title>
     <base href="/" />
     </head>
