@@ -1,4 +1,4 @@
-export default ({ markup, styleTags }) => {
+export default ({ markup }) => {
   return `<!doctype html>
     <html lang="en">
     <head>
@@ -7,8 +7,9 @@ export default ({ markup, styleTags }) => {
     <meta
     name="description"
     content="Template HTML for MERN stack apps"
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     />
-    ${styleTags}
     <title>Skeleton</title>
     <base href="/" />
     </head>
