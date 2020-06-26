@@ -14,7 +14,6 @@ const router = express.Router();
 const serverRender = (req, res) => {
   const sheets = new ServerStyleSheets();
   const context = {};
-
   const markup = ReactDOMServer.renderToString(
     sheets.collect(
       <StaticRouter location={req.url} context={context}>
@@ -26,10 +25,11 @@ const serverRender = (req, res) => {
   );
 
   if (context.url) {
-    res.redirect(303, context.url);
+    // console.log(context);
+    return res.redirect(303, context.url);
   } else {
     const css = sheets.toString();
-    res.status(200).send(
+    return res.status(200).send(
       HTML_template({
         markup: markup,
         css: css,

@@ -24,6 +24,10 @@ const UserSchema = new mongoose.Schema({
     required: "Password is required",
   },
   salt: String,
+  about: {
+    type: String,
+    trim: true,
+  },
 });
 
 /* Virtual properties are not stored in mongodb */
