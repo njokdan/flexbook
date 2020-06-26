@@ -9,7 +9,7 @@ export default ({ markup, css }) => {
     content="Template HTML for MERN stack apps"/>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:100,300,400">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    
+    <style type="text/css">body {margin: 0}</style>
     <title>Skeleton</title>
     <base href="/" />
     </head>

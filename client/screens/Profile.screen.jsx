@@ -75,6 +75,17 @@ export default function Profile({ match }) {
       </Typography>
       <List dense>
         <ListItem>
+          <ListItemAvatar>
+            <Avatar>
+              <Person />
+            </Avatar>
+          </ListItemAvatar>
+          <ListItemText primary={user.name} secondary={user.email} />
+        </ListItem>
+        <ListItem>
+          <ListItemText
+            primary={"Joined: " + new Date(user.created).toDateString()}
+          />
           {auth.isAuthenticated().user &&
             auth.isAuthenticated().user._id == user._id && (
               <ListItemSecondaryAction>
@@ -86,19 +97,8 @@ export default function Profile({ match }) {
                 <DeleteProfile userId={user._id} />
               </ListItemSecondaryAction>
             )}
-          <ListItemAvatar>
-            <Avatar>
-              <Person />
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={user.name} secondary={user.email} />
         </ListItem>
         <Divider />
-        <ListItem>
-          <ListItemText
-            primary={"Joined: " + new Date(user.created).toDateString()}
-          />
-        </ListItem>
       </List>
     </Paper>
   );

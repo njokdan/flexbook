@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -38,6 +38,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Signin(props) {
+  const jwt = auth.isAuthenticated();
   const classes = useStyles();
   const [values, setValues] = useState({
     email: "",
@@ -45,6 +46,12 @@ export default function Signin(props) {
     error: "",
     redirectToReferrer: false,
   });
+
+  useEffect(() => {
+    if (jwt) {
+      setValues({ ...values, redirectToReferrer: true });
+    }
+  }, [jwt]);
 
   const clickSubmit = () => {
     const user = {

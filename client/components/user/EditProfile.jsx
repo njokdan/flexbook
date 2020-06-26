@@ -62,11 +62,11 @@ export default function EditProfile({ match }) {
     error: "",
     id: "",
   });
-  const jwt = auth.isAuthenticated();
 
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
+    const jwt = auth.isAuthenticated();
 
     readUserProfile(
       {
@@ -99,6 +99,7 @@ export default function EditProfile({ match }) {
     values.passoword && userData.append("passoword", values.passoword);
     values.about && userData.append("about", values.about);
     values.photo && userData.append("photo", values.photo);
+
     updateUserProfile(
       {
         userId: match.params.userId,
@@ -119,12 +120,15 @@ export default function EditProfile({ match }) {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     setValues({ ...values, [name]: value });
   };
+
   const photoUrl = values.id
     ? `/api/users/photo/${values.id}?${new Date().getTime()}`
     : "/api/users/defaultphoto";
+
   if (values.redirectToProfile) {
     return <Redirect to={"/user/" + values.id} />;
   }
+
   return (
     <Card className={classes.card}>
       <CardContent>

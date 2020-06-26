@@ -1,5 +1,5 @@
 {
-  "name": "blackbook",
+  "name": "flexbook",
   "version": "2.0.0",
   "description": "social media web app",
   "main": "./server/server.js",
