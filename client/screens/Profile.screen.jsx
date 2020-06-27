@@ -70,7 +70,7 @@ export default function Profile({ match }) {
   };
 
   let photoUrl = user._id
-    ? `/api/users/photo/${user._id}?${new Date().getTime()}`
+    ? `/api/users/photo/${user._id}`
     : "/api/users/defaultphoto";
 
   useEffect(() => {

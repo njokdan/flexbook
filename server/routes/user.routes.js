@@ -42,7 +42,7 @@ router
   .put(authCtrl.requireSignin, userCtrl.update)
   .delete(authCtrl.requireSignin, userCtrl.remove);
 
-// Fetching photos routes
+// Fetching photos routes - checks if there is a photo attached to profile, if not returns default photo
 router
   .route("/api/users/photo/:userId")
   .get(userCtrl.photo, userCtrl.defaultPhoto);
