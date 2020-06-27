@@ -45,7 +45,9 @@ const list = async (req, res) => {
 // Find a user by ID and set req.profile as the user
 const userByID = async (req, res, next, id) => {
   try {
-    let user = await User.findById(id);
+    let user = await User.findById(id)
+      .populate("following", "_id name")
+      .populate("followers", "_id name");
     if (!user)
       return res.status("400").json({
         error: "User not found",
@@ -126,6 +128,76 @@ const defaultPhoto = (req, res) => {
   return res.sendFile(process.cwd() + profileImage);
 };
 
+//  Update a user's following list (who the user follows)
+const addUserFollowingList = async (req, res, next) => {
+  try {
+    await User.findByIdAndUpdate(req.body.userId, {
+      $push: { following: req.body.followId },
+    });
+    next();
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
+// Add a new follower to a user (update list of followers of a user)
+const addUserFollowedByList = async (req, res) => {
+  try {
+    let result = await User.findByIdAndUpdate(
+      req.body.followId,
+      { $push: { followers: req.body.userId } },
+      { new: true }
+    )
+      .populate("following", "_id name")
+      .populate("followers", "_id name")
+      .exec();
+    result.hashed_password = undefined;
+    result.salt = undefined;
+    res.json(result);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
+// remove a user from following list of a user (stop following someone)
+const removeUserFollowingList = async (req, res, next) => {
+  try {
+    await User.findByIdAndUpdate(req.body.userId, {
+      $pull: { following: req.body.unfollowId },
+    });
+    next();
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
+// remove follower from a user's followers list
+const removeUserFollowedByList = async (req, res) => {
+  try {
+    let result = await User.findByIdAndUpdate(
+      req.body.unfollowId,
+      { $pull: { followers: req.body.userId } },
+      { new: true }
+    )
+      .populate("following", "_id name")
+      .populate("followers", "_id name")
+      .exec();
+    result.hashed_password = undefined;
+    result.salt = undefined;
+    res.json(result);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
 export default {
   create,
   userByID,
@@ -135,4 +207,8 @@ export default {
   update,
   photo,
   defaultPhoto,
+  addUserFollowingList,
+  addUserFollowedByList,
+  removeUserFollowingList,
+  removeUserFollowedByList,
 };

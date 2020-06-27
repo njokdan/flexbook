@@ -26,7 +26,7 @@ Returns an array containing the user objects that were retrieved from the databa
 */
 const getAllUsers = async (signal) => {
   try {
-    let response = await fetch("/api/users/", {
+    let response = await fetch("/api/users", {
       method: "GET",
       signal: signal,
     });
@@ -94,10 +94,48 @@ const deleteUser = async (params, credentials) => {
   }
 };
 
+// Follow a user
+const followUser = async (params, credentials, followId) => {
+  try {
+    let response = await fetch("/api/users/follow/", {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+      body: JSON.stringify({ userId: params.userId, followId: followId }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+// unfollow a user
+const unfollowUser = async (params, credentials, unfollowId) => {
+  try {
+    let response = await fetch("/api/users/unfollow/", {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+      body: JSON.stringify({ userId: params.userId, unfollowId: unfollowId }),
+    });
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export {
   createUser,
   getAllUsers,
   readUserProfile,
   updateUserProfile,
   deleteUser,
+  followUser,
+  unfollowUser,
 };

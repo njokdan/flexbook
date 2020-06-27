@@ -24,6 +24,9 @@ const Menu = withRouter(({ history }) => (
           <HomeIcon />
         </IconButton>
       </Link>
+      <Link to="/users">
+        <Button style={isActive(history, "/users")}>Users list</Button>
+      </Link>
       {typeof window !== "undefined" && !auth.isAuthenticated() && (
         <span>
           <Link to="/signup">
