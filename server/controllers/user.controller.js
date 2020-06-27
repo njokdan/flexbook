@@ -3,6 +3,9 @@ import { extend, isEmpty } from "lodash";
 import errorHandler from "./error.controller";
 import jwt from "jsonwebtoken";
 import config from "./../../config/config";
+import formidable from "formidable";
+import fs from "fs";
+import profileImage from "../../client/assets/images/dyinginside.jpg";
 
 // Creates a new user
 const create = async (req, res) => {
@@ -65,25 +68,33 @@ const read = (req, res) => {
 
 // Updates a user
 const update = async (req, res) => {
-  console.log(req.body, req.profile);
-  if (isEmpty(req.body)) {
-    return res.status(400).json({
-      error: "No updates specified.",
-    });
-  }
-  try {
+  const form = formidable({ multiples: true, keepExtensions: true });
+
+  form.parse(req, async (err, fields, files) => {
+    if (err) {
+      console.error(err);
+      return res.status(400).json({
+        error: "Photo could not be uploaded",
+      });
+    }
     let user = req.profile;
-    user = extend(user, req.body);
+    user = extend(user, fields);
     user.updated = Date.now();
-    await user.save();
-    user.hashed_password = undefined;
-    user.salt = undefined;
-    res.status(200).json(user);
-  } catch (err) {
-    return res.status(400).json({
-      error: errorHandler.getErrorMessage(err),
-    });
-  }
+    if (files.photo) {
+      user.photo.data = fs.readFileSync(files.photo.path);
+      user.photo.contentType = files.photo.type;
+    }
+    try {
+      await user.save();
+      user.hashed_password = undefined;
+      user.salt = undefined;
+      res.json(user);
+    } catch (err) {
+      return res.status(400).json({
+        error: errorHandler.getErrorMessage(err),
+      });
+    }
+  });
 };
 
 // Removes a user from the db
@@ -101,4 +112,27 @@ const remove = async (req, res) => {
   }
 };
 
-export default { create, userByID, read, list, remove, update };
+// Get photo
+const photo = (req, res, next) => {
+  if (req.profile.photo.data) {
+    res.set("Content-Type", req.profile.photo.contentType);
+    return res.send(req.profile.photo.data);
+  }
+  next();
+};
+
+// send default profile photo
+const defaultPhoto = (req, res) => {
+  return res.sendFile(process.cwd() + profileImage);
+};
+
+export default {
+  create,
+  userByID,
+  read,
+  list,
+  remove,
+  update,
+  photo,
+  defaultPhoto,
+};

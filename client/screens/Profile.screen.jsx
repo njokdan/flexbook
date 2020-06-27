@@ -11,7 +11,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Edit from "@material-ui/icons/Edit";
 import Divider from "@material-ui/core/Divider";
-import Person from "@material-ui/icons/Person";
 import DeleteProfile from "../components/user/DeleteProfile.jsx";
 import auth from "../api/helpers/auth.helper";
 import { readUserProfile } from "../api/user.api";
@@ -41,6 +40,10 @@ export default function Profile({ match }) {
 
   const [user, setUser] = useState({});
   const [redirectToSignin, setRedirectToSignin] = useState(false);
+
+  let photoUrl = user._id
+    ? `/api/users/photo/${user._id}?${new Date().getTime()}`
+    : "/api/users/defaultphoto";
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -76,11 +79,10 @@ export default function Profile({ match }) {
       <List dense>
         <ListItem>
           <ListItemAvatar>
-            <Avatar>
-              <Person />
-            </Avatar>
+            <Avatar src={photoUrl} />
           </ListItemAvatar>
           <ListItemText primary={user.name} secondary={user.email} />
+          <ListItemText primary={user.about} />
         </ListItem>
         <ListItem>
           <ListItemText

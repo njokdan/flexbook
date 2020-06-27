@@ -52,6 +52,10 @@ const useStyles = makeStyles((theme) => ({
 
 export default function EditProfile({ match }) {
   const classes = useStyles();
+  const jwt = auth.isAuthenticated();
+
+  const [id, setId] = useState("");
+
   const [values, setValues] = useState({
     name: "",
     about: "",
@@ -60,13 +64,11 @@ export default function EditProfile({ match }) {
     password: "",
     redirectToProfile: false,
     error: "",
-    id: "",
   });
 
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-    const jwt = auth.isAuthenticated();
 
     readUserProfile(
       {
@@ -80,13 +82,14 @@ export default function EditProfile({ match }) {
       } else {
         setValues({
           ...values,
-          id: data._id,
           name: data.name,
           email: data.email,
           about: data.about,
         });
+        setId(data._id);
       }
     });
+
     return function cleanup() {
       abortController.abort();
     };
@@ -116,17 +119,16 @@ export default function EditProfile({ match }) {
       }
     });
   };
+
   const handleChange = (name) => (event) => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     setValues({ ...values, [name]: value });
   };
 
-  const photoUrl = values.id
-    ? `/api/users/photo/${values.id}?${new Date().getTime()}`
-    : "/api/users/defaultphoto";
+  const photoUrl = id ? `/api/users/photo/${id}` : "/api/users/defaultphoto";
 
   if (values.redirectToProfile) {
-    return <Redirect to={"/user/" + values.id} />;
+    return <Redirect to={"/user/" + id} />;
   }
 
   return (
@@ -193,7 +195,7 @@ export default function EditProfile({ match }) {
           onChange={handleChange("password")}
           margin="normal"
         />
-        <br />{" "}
+        <br />
         {values.error && (
           <Typography component="p" color="error">
             <Icon color="error" className={classes.error}>
