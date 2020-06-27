@@ -10,6 +10,8 @@ Creating a new user with POST
 */
 router.route("/api/users").get(userCtrl.list).post(userCtrl.create);
 
+// get default user photo. needs to be above fetch user (confused :userId)
+router.route("/api/users/defaultphoto").get(userCtrl.defaultPhoto);
 /* 
 Fetching a user with GET
 Updating a user with PUT
@@ -20,6 +22,11 @@ router
   .get(authCtrl.requireSignin, userCtrl.read)
   .put(authCtrl.requireSignin, userCtrl.update)
   .delete(authCtrl.requireSignin, userCtrl.remove);
+
+// Fetching photos routes
+router
+  .route("/api/users/photo/:userId")
+  .get(userCtrl.photo, userCtrl.defaultPhoto);
 
 /* 
 When a route is called with the "userId" param,
