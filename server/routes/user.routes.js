@@ -8,7 +8,26 @@ const router = express.Router();
 Listing users with GET
 Creating a new user with POST
 */
-router.route("/api/users").get(userCtrl.list).post(userCtrl.create);
+router.route("/api/users$").get(userCtrl.list).post(userCtrl.create);
+
+/**
+ * following api routes
+ */
+router
+  .route("/api/users/follow")
+  .put(
+    authCtrl.requireSignin,
+    userCtrl.addUserFollowingList,
+    userCtrl.addUserFollowedByList
+  );
+
+router
+  .route("/api/users/unfollow")
+  .put(
+    authCtrl.requireSignin,
+    userCtrl.removeUserFollowingList,
+    userCtrl.removeUserFollowedByList
+  );
 
 // get default user photo. needs to be above fetch user (confused :userId)
 router.route("/api/users/defaultphoto").get(userCtrl.defaultPhoto);

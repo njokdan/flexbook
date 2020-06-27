@@ -15,6 +15,7 @@ import DeleteProfile from "../components/user/DeleteProfile.jsx";
 import auth from "../api/helpers/auth.helper";
 import { readUserProfile } from "../api/user.api";
 import { Redirect, Link } from "react-router-dom";
+import FollowProfileButton from "../components/user/FollowProfileButton.jsx";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
@@ -82,6 +83,8 @@ export default function Profile({ match }) {
             <Avatar src={photoUrl} />
           </ListItemAvatar>
           <ListItemText primary={user.name} secondary={user.email} />
+        </ListItem>
+        <ListItem>
           <ListItemText primary={user.about} />
         </ListItem>
         <ListItem>
@@ -89,16 +92,17 @@ export default function Profile({ match }) {
             primary={"Joined: " + new Date(user.created).toDateString()}
           />
           {auth.isAuthenticated().user &&
-            auth.isAuthenticated().user._id == user._id && (
-              <ListItemSecondaryAction>
-                <Link to={"/user/edit/" + user._id}>
-                  <IconButton aria-label="Edit" color="primary">
-                    <Edit />
-                  </IconButton>
-                </Link>
-                <DeleteProfile userId={user._id} />
-              </ListItemSecondaryAction>
-            )}
+          auth.isAuthenticated().user._id == user._id ? (
+            <ListItemSecondaryAction>
+              <Link to={"/user/edit/" + user._id}>
+                <IconButton aria-label="Edit" color="primary">
+                  <Edit />
+                </IconButton>
+              </Link>
+              <DeleteProfile userId={user._id} />
+            </ListItemSecondaryAction>
+          ) : // <FollowProfileButton />
+          null}
         </ListItem>
         <Divider />
       </List>
