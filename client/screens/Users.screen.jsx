@@ -57,9 +57,7 @@ export default () => {
             <Link to={"/user/" + item._id} key={`${i}flex`}>
               <ListItem button>
                 <ListItemAvatar>
-                  <Avatar>
-                    <Person />
-                  </Avatar>
+                  <Avatar src={`/api/users/photo/${item._id}`} />
                 </ListItemAvatar>
                 <ListItemText primary={item.name} />
                 <ListItemSecondaryAction>

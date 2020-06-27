@@ -10,6 +10,7 @@ export default function FollowProfileButton(props) {
   const unfollowClick = () => {
     props.onButtonClick(unfollowUser);
   };
+
   return (
     <div>
       {props.following ? (
