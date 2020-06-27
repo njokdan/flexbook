@@ -38,9 +38,36 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Profile({ match }) {
   const classes = useStyles();
-
   const [user, setUser] = useState({});
+  const [following, setFollowing] = useState(false);
   const [redirectToSignin, setRedirectToSignin] = useState(false);
+
+  const jwt = auth.isAuthenticated();
+
+  const checkFollow = (user) => {
+    const match = user.followers.some((follower) => {
+      return follower._id == jwt.user._id;
+    });
+    return match;
+  };
+
+  const clickFollowButton = (callApi) => {
+    callApi(
+      {
+        userId: jwt.user._id,
+      },
+      {
+        t: jwt.token,
+      },
+      user._id
+    ).then((data) => {
+      if (data.error) {
+        setUser({ ...user, error: data.error });
+      } else {
+        setFollowing(!following);
+      }
+    });
+  };
 
   let photoUrl = user._id
     ? `/api/users/photo/${user._id}?${new Date().getTime()}`
@@ -49,7 +76,7 @@ export default function Profile({ match }) {
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
-    const jwt = auth.isAuthenticated();
+
     readUserProfile(
       {
         userId: match.params.userId,
@@ -61,8 +88,10 @@ export default function Profile({ match }) {
         setRedirectToSignin(true);
       } else {
         setUser(data);
+        setFollowing(checkFollow(data));
       }
     });
+
     return function cleanup() {
       abortController.abort();
     };
@@ -101,8 +130,12 @@ export default function Profile({ match }) {
               </Link>
               <DeleteProfile userId={user._id} />
             </ListItemSecondaryAction>
-          ) : // <FollowProfileButton />
-          null}
+          ) : (
+            <FollowProfileButton
+              following={following}
+              onButtonClick={clickFollowButton}
+            />
+          )}
         </ListItem>
         <Divider />
       </List>
