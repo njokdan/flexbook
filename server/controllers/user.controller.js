@@ -114,7 +114,7 @@ const remove = async (req, res) => {
   }
 };
 
-// Get photo
+// Get profile photo
 const photo = (req, res, next) => {
   if (req.profile.photo.data) {
     res.set("Content-Type", req.profile.photo.contentType);
@@ -123,7 +123,7 @@ const photo = (req, res, next) => {
   next();
 };
 
-// send default profile photo
+// get default profile photo
 const defaultPhoto = (req, res) => {
   return res.sendFile(process.cwd() + profileImage);
 };
@@ -198,6 +198,23 @@ const removeUserFollowedByList = async (req, res) => {
   }
 };
 
+/**
+ * get User collection in the database to find the users
+ * that are not in the current user's following list.
+ */
+const findNewPeople = async (req, res) => {
+  let following = req.profile.following;
+  following.push(req.profile._id);
+  try {
+    let users = await User.find({ _id: { $nin: following } }).select("name");
+    res.json(users);
+  } catch (err) {
+    return res.status(400).json({
+      error: errorHandler.getErrorMessage(err),
+    });
+  }
+};
+
 export default {
   create,
   userByID,
@@ -211,4 +228,5 @@ export default {
   addUserFollowedByList,
   removeUserFollowingList,
   removeUserFollowedByList,
+  findNewPeople,
 };

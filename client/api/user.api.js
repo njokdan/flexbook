@@ -150,6 +150,29 @@ const followUser = async (params, credentials, followId) => {
   }
 };
 
+/**
+ * Finds new people to follow
+ * @param {object with User's ID} params
+ * @param {object with authorized token} credentials
+ * @param {cancel request if needed} signal
+ */
+const findNewPeople = async (params, credentials, signal) => {
+  try {
+    let response = await fetch("/api/users/findNewPeople/" + params.userId, {
+      method: "GET",
+      signal: signal,
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + credentials.t,
+      },
+    });
+    return await response.json();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 export {
   createUser,
   getAllUsers,
@@ -158,4 +181,5 @@ export {
   deleteUser,
   followUser,
   unfollowUser,
+  findNewPeople,
 };
