@@ -1,3 +1,4 @@
+// fetches a specific error to show if possible
 const getErrorMessage = (err) => {
   let message = "";
   if (err.code) {
@@ -19,6 +20,7 @@ const getErrorMessage = (err) => {
   return message;
 };
 
+// fetches a specific error to show if possible
 const getUniqueErrorMessage = (err) => {
   let output;
   try {

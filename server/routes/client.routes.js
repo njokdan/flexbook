@@ -6,8 +6,8 @@ import ReactDOMServer from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import MainRouter from "../../client/MainRouter";
 import HTML_template from "../../HTML_template";
-import { ServerStyleSheets, ThemeProvider } from "@material-ui/styles";
 import theme from "../../client/theme";
+import { ServerStyleSheets, ThemeProvider } from "@material-ui/styles";
 
 const router = express.Router();
 
@@ -25,7 +25,6 @@ const serverRender = (req, res) => {
   );
 
   if (context.url) {
-    // console.log(context);
     return res.redirect(303, context.url);
   } else {
     const css = sheets.toString();

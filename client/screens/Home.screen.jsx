@@ -22,7 +22,6 @@ const useStyles = makeStyles((theme) => ({
   title: {
     padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px
  ${theme.spacing(2)}px`,
-    color: theme.palette.openTitle,
   },
   media: {
     minHeight: 400,
@@ -74,11 +73,8 @@ export default ({ history }) => {
       )}
       {defaultPage && (
         <Grid container spacing={8}>
-          <Grid item xs={8} sm={7}>
+          <Grid item xs={12}>
             <NewsFeed />
-          </Grid>
-          <Grid item xs={6} sm={4}>
-            <FindPeople />
           </Grid>
         </Grid>
       )}
