@@ -1,4 +1,10 @@
 import React, { useState, useEffect } from "react";
+import DeleteProfile from "../components/user/DeleteProfile.jsx";
+import auth from "../api/helpers/auth.helper";
+import { readUserProfile } from "../api/user.api";
+import { Redirect, Link } from "react-router-dom";
+import FollowProfileButton from "../components/user/FollowProfileButton.jsx";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
@@ -11,11 +17,6 @@ import IconButton from "@material-ui/core/IconButton";
 import Typography from "@material-ui/core/Typography";
 import Edit from "@material-ui/icons/Edit";
 import Divider from "@material-ui/core/Divider";
-import DeleteProfile from "../components/user/DeleteProfile.jsx";
-import auth from "../api/helpers/auth.helper";
-import { readUserProfile } from "../api/user.api";
-import { Redirect, Link } from "react-router-dom";
-import FollowProfileButton from "../components/user/FollowProfileButton.jsx";
 
 const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({

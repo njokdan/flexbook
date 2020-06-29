@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from "react";
+import auth from "../../api/helpers/auth.helper";
+import { readUserProfile, updateUserProfile } from "../../api/user.api";
+import { Redirect } from "react-router-dom";
+
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -9,9 +13,6 @@ import Icon from "@material-ui/core/Icon";
 import Avatar from "@material-ui/core/Avatar";
 import FileUpload from "@material-ui/icons/AddPhotoAlternate";
 import { makeStyles } from "@material-ui/core/styles";
-import auth from "../../api/helpers/auth.helper";
-import { readUserProfile, updateUserProfile } from "../../api/user.api";
-import { Redirect } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   card: {

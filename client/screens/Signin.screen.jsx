@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from "react";
+import auth from "../api/helpers/auth.helper";
+import { Redirect } from "react-router-dom";
+import { signin } from "../api/auth.api";
+
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -7,9 +11,6 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Icon from "@material-ui/core/Icon";
 import { makeStyles } from "@material-ui/core/styles";
-import auth from "../api/helpers/auth.helper";
-import { Redirect } from "react-router-dom";
-import { signin } from "../api/auth.api";
 
 const useStyles = makeStyles((theme) => ({
   card: {

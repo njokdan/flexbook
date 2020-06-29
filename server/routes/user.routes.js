@@ -8,7 +8,7 @@ const router = express.Router();
 Listing users with GET
 Creating a new user with POST
 */
-router.route("/api/users$").get(userCtrl.list).post(userCtrl.create);
+router.route("/api/users").get(userCtrl.list).post(userCtrl.create);
 
 /**
  * following api routes
