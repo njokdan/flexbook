@@ -11,6 +11,13 @@ Creating a new user with POST
 router.route("/api/users").get(userCtrl.list).post(userCtrl.create);
 
 /**
+ * find new people to follow and return
+ */
+router
+  .route("/api/users/findNewPeople/:userId")
+  .get(authCtrl.requireSignin, userCtrl.findNewPeople);
+
+/**
  * following api routes
  */
 router

@@ -13,6 +13,7 @@ import path from "path";
 import userRoutes from "./routes/user.routes";
 import authRoutes from "./routes/auth.routes";
 import clientRoutes from "./routes/client.routes";
+import postRoutes from "./routes/post.routes";
 import config from "../config/config";
 
 import devBundle from "./devBundle"; //comment out when building the application code for production
@@ -36,6 +37,7 @@ app.use("/dist", express.static(path.join(CURRENT_WORKING_DIR, "dist")));
 
 // Routes
 app.use("/", userRoutes);
+app.use("/", postRoutes);
 app.use("/", authRoutes);
 
 // Server side rendering routes

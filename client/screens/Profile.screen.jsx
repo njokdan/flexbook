@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from "react";
-import DeleteProfile from "../components/user/DeleteProfile.jsx";
+import { Redirect, Link } from "react-router-dom";
+
 import auth from "../api/helpers/auth.helper";
 import { readUserProfile } from "../api/user.api";
-import { Redirect, Link } from "react-router-dom";
+import { listPostsByUser } from "../api/post.api";
+
+import DeleteProfile from "../components/user/DeleteProfile.jsx";
 import FollowProfileButton from "../components/user/FollowProfileButton.jsx";
+import ProfileTabs from "../components/user/ProfileTabs.jsx";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -40,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Profile({ match }) {
   const classes = useStyles();
   const [user, setUser] = useState({});
+  const [posts, setPosts] = useState([]);
   const [following, setFollowing] = useState(false);
   const [redirectToSignin, setRedirectToSignin] = useState(false);
 
@@ -74,6 +79,30 @@ export default function Profile({ match }) {
     ? `/api/users/photo/${user._id}`
     : "/api/users/defaultphoto";
 
+  const loadPosts = (user) => {
+    listPostsByUser(
+      {
+        userId: user,
+      },
+      {
+        t: jwt.token,
+      }
+    ).then((data) => {
+      if (data.error) {
+        console.log(data.error);
+      } else {
+        setPosts(data);
+      }
+    });
+  };
+
+  const removePost = (post) => {
+    const updatedPosts = posts;
+    const index = updatedPosts.indexOf(post);
+    updatedPosts.splice(index, 1);
+    setPosts(updatedPosts);
+  };
+
   useEffect(() => {
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -90,6 +119,7 @@ export default function Profile({ match }) {
       } else {
         setUser(data);
         setFollowing(checkFollow(data));
+        loadPosts(data._id);
       }
     });
 
@@ -140,6 +170,7 @@ export default function Profile({ match }) {
         </ListItem>
         <Divider />
       </List>
+      <ProfileTabs user={user} posts={posts} removePostUpdate={removePost} />
     </Paper>
   );
 }
