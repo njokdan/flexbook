@@ -1,4 +1,5 @@
 import express from "express";
+
 import userCtrl from "../controllers/user.controller";
 import authCtrl from "../controllers/auth.controller";
 import postCtrl from "../controllers/post.controller";
@@ -20,6 +21,7 @@ router
   .get(authCtrl.requireSignin, postCtrl.listNewsFeed);
 
 router.route("/api/posts/like").put(authCtrl.requireSignin, postCtrl.like);
+
 router.route("/api/posts/unlike").put(authCtrl.requireSignin, postCtrl.unlike);
 
 router
