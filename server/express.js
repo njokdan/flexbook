@@ -27,7 +27,7 @@ const app = express();
 // devBundle.compile(app); //comment out when building the application code for production
 
 // Middleware
-app.use(logger("dev"));
+// app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
