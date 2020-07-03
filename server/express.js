@@ -2,7 +2,7 @@
 
 // Dependencies
 import express from "express";
-import logger from "morgan";
+// import logger from "morgan";
 import cookieParser from "cookie-parser";
 import compress from "compression";
 import cors from "cors";
