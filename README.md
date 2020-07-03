@@ -2,6 +2,8 @@
 
 ![Alt text](docs/FlexBook.png?raw=true "FlexBook")
 
+[Demo](https://flexbook-social.herokuapp.com/)
+
 ### Features
 
 - Authentication and authorization
