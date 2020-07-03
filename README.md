@@ -2,6 +2,15 @@
 
 ![Alt text](docs/FlexBook.png?raw=true "FlexBook")
 
+### Features
+
+- Authentication and authorization
+- Profiles (Follower/following system)
+- New posts
+- Custom profiles
+- Image uploads
+- Likes
+
 # Scripts:
 
 - npm dev: This command will get Nodemon, Webpack, and the server started for development.
