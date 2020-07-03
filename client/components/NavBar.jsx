@@ -39,14 +39,7 @@ const Menu = withRouter(({ history }) => {
             <HomeIcon />
           </IconButton>
         </Link>
-        <Button
-          component={Link}
-          to="/users"
-          style={isActive(history, "/users")}
-          className={classes.MuiButton}
-        >
-          Users list
-        </Button>
+
         {typeof window !== "undefined" && !auth.isAuthenticated() && (
           <span>
             <Button
@@ -88,6 +81,14 @@ const Menu = withRouter(({ history }) => {
               }}
             >
               Sign out
+            </Button>
+            <Button
+              component={Link}
+              to="/users"
+              style={isActive(history, "/users")}
+              className={classes.MuiButton}
+            >
+              Users list
             </Button>
           </span>
         )}

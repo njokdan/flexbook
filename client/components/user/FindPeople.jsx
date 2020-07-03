@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
     padding: theme.spacing(1),
     margin: 0,
+    minWidth: "300px",
   }),
   title: {
     margin: `${theme.spacing(3)}px ${theme.spacing(1)}px ${theme.spacing(2)}px`,
@@ -102,6 +103,7 @@ export default function FindPeople() {
   const handleRequestClose = (event, reason) => {
     setValues({ ...values, open: false });
   };
+
   return (
     <div>
       <Paper className={classes.root} elevation={4}>

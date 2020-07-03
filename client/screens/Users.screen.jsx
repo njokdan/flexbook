@@ -49,12 +49,16 @@ export default () => {
   }, []);
 
   return (
-    <Grid justify="center" alignItems="center">
-      <Typography variant="h6" className={classes.title}>
-        All Flexers
-      </Typography>
+    <Grid container justify="center" alignItems="center" direction="column">
+      <Grid item>
+        <Typography variant="h6" className={classes.title}>
+          All Flexers
+        </Typography>
+      </Grid>
 
-      <FollowPeople />
+      <Grid item>
+        <FollowPeople />
+      </Grid>
     </Grid>
   );
 };

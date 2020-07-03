@@ -1,4 +1,6 @@
-## A social media app
+## A social media web app
+
+![Alt text](docs/FlexBook.png?raw=true "FlexBook")
 
 # Scripts:
 

@@ -76,23 +76,9 @@ const MobileDrawer = withRouter(({ history }) => {
           </Typography>
         </div>
         <Divider />
-        <List>
-          <ListItem
-            button
-            key={"UsersList"}
-            component={Link}
-            to="/users"
-            onClick={() => setOpen(!open)}
-          >
-            <ListItemText
-              primary="Users List"
-              style={isActive(history, "/users")}
-            />
-          </ListItem>
-        </List>
 
         {typeof window !== "undefined" && !auth.isAuthenticated() && (
-          <>
+          <List>
             <ListItem
               button
               key={"signup"}
@@ -117,10 +103,10 @@ const MobileDrawer = withRouter(({ history }) => {
                 style={isActive(history, "/signin")}
               />
             </ListItem>
-          </>
+          </List>
         )}
         {typeof window !== "undefined" && auth.isAuthenticated() && (
-          <>
+          <List>
             <ListItem
               button
               key={"Profile"}
@@ -136,7 +122,18 @@ const MobileDrawer = withRouter(({ history }) => {
                 )}
               />
             </ListItem>
-
+            <ListItem
+              button
+              key={"UsersList"}
+              component={Link}
+              to="/users"
+              onClick={() => setOpen(!open)}
+            >
+              <ListItemText
+                primary="Users List"
+                style={isActive(history, "/users")}
+              />
+            </ListItem>
             <ListItem
               button
               key={"signout"}
@@ -154,7 +151,7 @@ const MobileDrawer = withRouter(({ history }) => {
                 style={isActive(history, "/signout")}
               />
             </ListItem>
-          </>
+          </List>
         )}
       </Drawer>
     </>
