@@ -2,7 +2,7 @@
 
 // Dependencies
 import express from "express";
-// import logger from "morgan";
+import logger from "morgan";
 import cookieParser from "cookie-parser";
 import compress from "compression";
 import cors from "cors";
@@ -27,7 +27,7 @@ const app = express();
 // devBundle.compile(app); //comment out when building the application code for production
 
 // Middleware
-// app.use(logger("dev"));
+app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
