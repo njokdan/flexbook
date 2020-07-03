@@ -21,7 +21,10 @@ const useStyles = makeStyles((theme) => ({
   root: theme.mixins.gutters({
     padding: theme.spacing(1),
     margin: 0,
-    minWidth: "300px",
+    minWidth: "400px",
+    [theme.breakpoints.down("xs")]: {
+      minWidth: "300px",
+    },
   }),
   title: {
     margin: `${theme.spacing(3)}px ${theme.spacing(1)}px ${theme.spacing(2)}px`,
@@ -30,9 +33,16 @@ const useStyles = makeStyles((theme) => ({
   },
   avatar: {
     marginRight: theme.spacing(1),
+    [theme.breakpoints.down("xs")]: {
+      marginRight: "2px",
+      marginLeft: "-20px",
+    },
   },
   follow: {
     right: theme.spacing(2),
+    [theme.breakpoints.down("xs")]: {
+      marginRight: "-20px",
+    },
   },
   snack: {
     color: theme.palette.protectedTitle,
