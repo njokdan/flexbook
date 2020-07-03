@@ -1,5 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
+const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CURRENT_WORKING_DIR = process.cwd();
 
 const config = {
@@ -26,11 +27,16 @@ const config = {
         use: ["style-loader", "css-loader"],
       },
       {
-        test: /\.(ttf|eot|svg|gif|jpg|png)(\?[\s\S]+)?$/,
+        test: /\.(ttf|eot|svg|gif|jpg|png|ico)(\?[\s\S]+)?$/,
         use: "file-loader",
       },
     ],
   },
+  plugins: [
+    new HtmlWebpackPlugin({
+      favicon: `./client/assets/images/favicon.ico`,
+    }),
+  ],
 };
 
 module.exports = config;

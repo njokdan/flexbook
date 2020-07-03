@@ -10,6 +10,7 @@ const getErrorMessage = (err) => {
         message = getUniqueErrorMessage(err);
         break;
       default:
+        console.error(err);
         message = "Something went wrong";
     }
   } else {
