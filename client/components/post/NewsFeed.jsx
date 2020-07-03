@@ -6,6 +6,7 @@ import NewPost from "./NewPost.jsx";
 
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
 
@@ -16,11 +17,10 @@ const useStyles = makeStyles((theme) => ({
     paddingBottom: theme.spacing(3),
   },
   title: {
-    padding: `${theme.spacing(3)}px ${theme.spacing(2.5)}px ${theme.spacing(
-      2
-    )}px`,
     color: theme.palette.openTitle,
-    fontSize: "1em",
+    fontSize: "2em",
+    textAlign: "center",
+    marginBottom: 15,
   },
   media: {
     minHeight: 330,
@@ -70,14 +70,32 @@ export default function Newsfeed() {
   };
 
   return (
-    <Card className={classes.card}>
+    <Grid>
       <Typography type="title" className={classes.title}>
         Newsfeed
       </Typography>
-      <Divider />
-      <NewPost addUpdate={addPost} />
-      <Divider />
+
+      <Grid item xs={2} />
+      <Grid
+        container
+        item
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item xs={12}>
+          <NewPost addUpdate={addPost} />
+        </Grid>
+      </Grid>
+
+      <Grid container item>
+        <Grid item xs={3} />
+        <Grid item xs={6}>
+          <Divider />
+        </Grid>
+        <Grid item xs={3} />
+      </Grid>
       <PostList removeUpdate={removePost} posts={posts} />
-    </Card>
+    </Grid>
   );
 }

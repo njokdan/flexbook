@@ -22,6 +22,8 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     textAlign: "center",
     marginTop: theme.spacing(5),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
   error: {
@@ -73,7 +75,7 @@ export default function Signup() {
 
   return (
     <div>
-      <Card className={classes.card} elevation={10}>
+      <Card className={classes.card} elevation={2}>
         <CardContent>
           <Typography variant="h6" className={classes.title}>
             Sign Up

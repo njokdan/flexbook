@@ -19,6 +19,8 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginTop: theme.spacing(5),
     paddingBottom: theme.spacing(2),
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
   },
   error: {
     verticalAlign: "middle",
@@ -87,7 +89,7 @@ export default function Signin(props) {
   }
 
   return (
-    <Card className={classes.card} elevation={10}>
+    <Card className={classes.card} elevation={2}>
       <CardContent>
         <Typography variant="h6" className={classes.title}>
           Sign In

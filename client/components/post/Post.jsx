@@ -28,6 +28,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
     backgroundColor: "rgba(0, 0, 0, 0.06)",
   },
+  linkText: { textDecoration: "none", color: "#000" },
   cardContent: {
     backgroundColor: "white",
     padding: `${theme.spacing(2)}px 0px`,
@@ -126,7 +127,10 @@ export default function Post(props) {
           )
         }
         title={
-          <Link to={"/user/" + props.post.postedBy._id}>
+          <Link
+            to={"/user/" + props.post.postedBy._id}
+            className={classes.linkText}
+          >
             {props.post.postedBy.name}
           </Link>
         }

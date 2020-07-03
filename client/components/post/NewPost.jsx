@@ -15,11 +15,19 @@ import Icon from "@material-ui/core/Icon";
 import { makeStyles } from "@material-ui/core/styles";
 import IconButton from "@material-ui/core/IconButton";
 import PhotoCamera from "@material-ui/icons/PhotoCamera";
+import Paper from "@material-ui/core/Paper";
 
 const useStyles = makeStyles((theme) => ({
+  paper: {
+    maxWidth: 600,
+    minWidth: 300,
+    [theme.breakpoints.up("sm")]: {
+      minWidth: 580,
+    },
+  },
   root: {
+    padding: 1,
     backgroundColor: "#efefef",
-    padding: `${theme.spacing(3)}px 0px 1px`,
   },
   card: {
     maxWidth: 600,
@@ -69,6 +77,7 @@ export default function NewPost(props) {
   useEffect(() => {
     setValues({ ...values, user: auth.isAuthenticated().user });
   }, []);
+
   const clickPost = () => {
     let postData = new FormData();
     postData.append("text", values.text);
@@ -90,15 +99,18 @@ export default function NewPost(props) {
       }
     });
   };
+
   const handleChange = (name) => (event) => {
     const value = name === "photo" ? event.target.files[0] : event.target.value;
     setValues({ ...values, [name]: value });
   };
+
   const photoURL = values.user._id
     ? "/api/users/photo/" + values.user._id
     : "/api/users/defaultphoto";
+
   return (
-    <div className={classes.root}>
+    <Paper className={classes.paper}>
       <Card className={classes.card}>
         <CardHeader
           avatar={<Avatar src={photoURL} />}
@@ -155,7 +167,7 @@ export default function NewPost(props) {
           </Button>
         </CardActions>
       </Card>
-    </div>
+    </Paper>
   );
 }
 
