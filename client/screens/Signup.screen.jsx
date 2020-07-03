@@ -3,6 +3,7 @@ import { createUser } from "../api/user.api";
 import { Link } from "react-router-dom";
 
 import Card from "@material-ui/core/Card";
+import Grid from "@material-ui/core/Grid";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
 import Button from "@material-ui/core/Button";
@@ -22,8 +23,6 @@ const useStyles = makeStyles((theme) => ({
     margin: "auto",
     textAlign: "center",
     marginTop: theme.spacing(5),
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
     paddingBottom: theme.spacing(2),
   },
   error: {
@@ -74,76 +73,80 @@ export default function Signup() {
   };
 
   return (
-    <div>
-      <Card className={classes.card} elevation={2}>
-        <CardContent>
-          <Typography variant="h6" className={classes.title}>
-            Sign Up
-          </Typography>
-          <TextField
-            id="name"
-            label="Name"
-            className={classes.textField}
-            value={values.name}
-            onChange={handleChange("name")}
-            margin="normal"
-          />
-          <br />
-          <TextField
-            id="email"
-            type="email"
-            label="Email"
-            className={classes.textField}
-            value={values.email}
-            onChange={handleChange("email")}
-            margin="normal"
-          />
-          <br />
-          <TextField
-            id="password"
-            type="password"
-            label="Password"
-            className={classes.textField}
-            value={values.password}
-            onChange={handleChange("password")}
-            margin="normal"
-          />
-          <br />
-          {values.error && (
-            <Typography component="p" color="error">
-              <Icon color="error" className={classes.error}>
-                error
-              </Icon>
-              {values.error}
+    <Grid container justify="center">
+      <Grid item sm={false} md={2} />
+      <Grid item sm={12} md={8}>
+        <Card className={classes.card} elevation={2}>
+          <CardContent>
+            <Typography variant="h6" className={classes.title}>
+              Sign Up
             </Typography>
-          )}
-        </CardContent>
-        <CardActions>
-          <Button
-            color="primary"
-            variant="contained"
-            onClick={clickSubmit}
-            className={classes.submit}
-          >
-            Submit
-          </Button>
-        </CardActions>
-      </Card>
-      <Dialog open={values.open} disableBackdropClick={true}>
-        <DialogTitle>New Account</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            New account successfully created.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Link to="/signin">
-            <Button color="primary" autoFocus="autoFocus" variant="contained">
-              Sign In
+            <TextField
+              id="name"
+              label="Name"
+              className={classes.textField}
+              value={values.name}
+              onChange={handleChange("name")}
+              margin="normal"
+            />
+            <br />
+            <TextField
+              id="email"
+              type="email"
+              label="Email"
+              className={classes.textField}
+              value={values.email}
+              onChange={handleChange("email")}
+              margin="normal"
+            />
+            <br />
+            <TextField
+              id="password"
+              type="password"
+              label="Password"
+              className={classes.textField}
+              value={values.password}
+              onChange={handleChange("password")}
+              margin="normal"
+            />
+            <br />
+            {values.error && (
+              <Typography component="p" color="error">
+                <Icon color="error" className={classes.error}>
+                  error
+                </Icon>
+                {values.error}
+              </Typography>
+            )}
+          </CardContent>
+          <CardActions>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={clickSubmit}
+              className={classes.submit}
+            >
+              Submit
             </Button>
-          </Link>
-        </DialogActions>
-      </Dialog>
-    </div>
+          </CardActions>
+        </Card>
+        <Dialog open={values.open} disableBackdropClick={true}>
+          <DialogTitle>New Account</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              New account successfully created.
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Link to="/signin">
+              <Button color="primary" autoFocus="autoFocus" variant="contained">
+                Sign In
+              </Button>
+            </Link>
+          </DialogActions>
+        </Dialog>
+      </Grid>
+      <Grid item sm={false} md={2} />
+    </Grid>
   );
 }
