@@ -41,6 +41,7 @@ const useStyles = makeStyles((theme) => ({
 export default function Signin(props) {
   const jwt = auth.isAuthenticated();
   const classes = useStyles();
+  const [disableButton, setDisableButton] = useState(false);
   const [values, setValues] = useState({
     email: "",
     password: "",
@@ -49,12 +50,15 @@ export default function Signin(props) {
   });
 
   useEffect(() => {
+    setDisableButton(false);
     if (jwt) {
       setValues({ ...values, redirectToReferrer: true });
     }
   }, [jwt]);
 
   const clickSubmit = () => {
+    setDisableButton(true);
+
     const user = {
       email: values.email || undefined,
       password: values.password || undefined,
@@ -63,6 +67,7 @@ export default function Signin(props) {
     signin(user).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
+        setDisableButton(false);
       } else {
         auth.authenticate(data, () => {
           setValues({ ...values, error: "", redirectToReferrer: true });
@@ -129,6 +134,7 @@ export default function Signin(props) {
             <Button
               color="primary"
               variant="contained"
+              disabled={disableButton}
               onClick={clickSubmit}
               className={classes.submit}
             >

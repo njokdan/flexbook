@@ -27,10 +27,15 @@ const auth = {
    */
   clearJWT(cb) {
     if (typeof window !== "undefined") sessionStorage.removeItem("jwt");
-    signout().then((data) => {
-      cb();
-      document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    });
+    signout()
+      .then((data) => {
+        document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        cb();
+      })
+      .catch((e) => {
+        document.cookie = "t=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+        cb();
+      });
   },
 };
 

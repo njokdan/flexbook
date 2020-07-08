@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { createUser } from "../api/user.api";
 import { Link } from "react-router-dom";
 
@@ -45,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Signup() {
   const classes = useStyles();
+  const [disableButton, setDisableButton] = useState(false);
   const [values, setValues] = useState({
     name: "",
     password: "",
@@ -58,6 +59,7 @@ export default function Signup() {
   };
 
   const clickSubmit = () => {
+    setDisableButton(true);
     const user = {
       name: values.name || undefined,
       email: values.email || undefined,
@@ -66,11 +68,16 @@ export default function Signup() {
     createUser(user).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
+        setDisableButton(false);
       } else {
         setValues({ ...values, error: "", open: true });
       }
     });
   };
+
+  useEffect(() => {
+    setDisableButton(false);
+  }, []);
 
   return (
     <Grid container justify="center">
@@ -125,6 +132,7 @@ export default function Signup() {
               variant="contained"
               onClick={clickSubmit}
               className={classes.submit}
+              disabled={disableButton}
             >
               Submit
             </Button>

@@ -60,8 +60,13 @@ export default function Post(props) {
   const jwt = auth.isAuthenticated();
 
   const checkLike = (likes) => {
-    let match = likes.indexOf(jwt.user._id) !== -1;
-    return match;
+    if (jwt) {
+      if (jwt.user._id) {
+        let match = likes.indexOf(jwt.user._id) !== -1;
+        return match;
+      }
+    }
+    return 0;
   };
 
   const [values, setValues] = useState({

@@ -45,10 +45,12 @@ export default function Newsfeed() {
       },
       signal
     ).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setPosts(data);
+      if (data) {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          setPosts(data);
+        }
       }
     });
     return function cleanup() {
