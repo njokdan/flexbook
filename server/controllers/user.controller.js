@@ -101,6 +101,8 @@ const update = async (req, res) => {
 };
 
 // Removes a user from the db
+// when a user deletes his own profile, all his posts, likes, and follow/followd records
+// from all the related users in the database, are deleted.
 const remove = async (req, res) => {
   try {
     let user = req.profile;
