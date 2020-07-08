@@ -43,6 +43,7 @@ const useStyles = makeStyles((theme) => ({
   },
   cardHeader: {
     paddingTop: 8,
+    fontWeight: 700,
     paddingBottom: 8,
   },
   photoButton: {
@@ -67,12 +68,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function NewPost(props) {
   const classes = useStyles();
+  const [disableButton, setDisableButton] = useState(false);
   const [values, setValues] = useState({
     text: "",
     photo: "",
     error: "",
     user: {},
   });
+
   const jwt = auth.isAuthenticated();
   useEffect(() => {
     setValues({ ...values, user: auth.isAuthenticated().user });
@@ -93,9 +96,11 @@ export default function NewPost(props) {
     ).then((data) => {
       if (data.error) {
         setValues({ ...values, error: data.error });
+        setDisableButton(false);
       } else {
         setValues({ ...values, text: "", photo: "" });
         props.addUpdate(data);
+        setDisableButton(false);
       }
     });
   };
@@ -159,8 +164,11 @@ export default function NewPost(props) {
           <Button
             color="primary"
             variant="contained"
-            disabled={values.text === ""}
-            onClick={clickPost}
+            disabled={values.text === "" || disableButton}
+            onClick={() => {
+              setDisableButton(true);
+              clickPost();
+            }}
             className={classes.submit}
           >
             POST

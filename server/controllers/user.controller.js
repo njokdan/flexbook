@@ -1,5 +1,6 @@
 import User from "../models/user.model";
-import { extend, isEmpty } from "lodash";
+import Post from "../models/post.model";
+import { extend } from "lodash";
 import errorHandler from "./error.controller";
 import jwt from "jsonwebtoken";
 import config from "./../../config/config";
@@ -103,6 +104,33 @@ const update = async (req, res) => {
 const remove = async (req, res) => {
   try {
     let user = req.profile;
+    await User.updateMany(
+      { followers: user._id, following: user._id },
+      {
+        $pull: {
+          followers: { $in: [user._id] },
+          following: { $in: [user._id] },
+        },
+      }
+    );
+
+    await Post.deleteMany({ postedBy: user._id });
+
+    await Post.updateMany(
+      {
+        $or: [
+          { likes: user._id },
+          { comments: { $elemMatch: { postedBy: user._id } } },
+        ],
+      },
+      {
+        $pull: {
+          comments: { postedBy: { $in: [user._id] } },
+          likes: { $in: [user._id] },
+        },
+      }
+    );
+
     let deletedUser = await user.remove();
     deletedUser.hashed_password = undefined;
     deletedUser.salt = undefined;

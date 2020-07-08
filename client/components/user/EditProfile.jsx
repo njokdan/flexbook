@@ -55,8 +55,8 @@ export default function EditProfile({ match }) {
   const classes = useStyles();
   const jwt = auth.isAuthenticated();
 
+  const [disableSubmitButton, setDisableSubmitButton] = useState(false);
   const [id, setId] = useState("");
-
   const [values, setValues] = useState({
     name: "",
     about: "",
@@ -97,28 +97,36 @@ export default function EditProfile({ match }) {
   }, [match.params.userId]);
 
   const clickSubmit = () => {
-    let userData = new FormData();
-    values.name && userData.append("name", values.name);
-    values.email && userData.append("email", values.email);
-    values.passoword && userData.append("passoword", values.passoword);
-    values.about && userData.append("about", values.about);
-    values.photo && userData.append("photo", values.photo);
+    if (!disableSubmitButton) {
+      setDisableSubmitButton(true);
 
-    updateUserProfile(
-      {
-        userId: match.params.userId,
-      },
-      {
-        t: jwt.token,
-      },
-      userData
-    ).then((data) => {
-      if (data && data.error) {
-        setValues({ ...values, error: data.error });
-      } else {
-        setValues({ ...values, redirectToProfile: true });
-      }
-    });
+      let userData = new FormData();
+      values.name && userData.append("name", values.name);
+      values.email && userData.append("email", values.email);
+      values.passoword && userData.append("passoword", values.passoword);
+      values.about && userData.append("about", values.about);
+      values.photo && userData.append("photo", values.photo);
+
+      updateUserProfile(
+        {
+          userId: match.params.userId,
+        },
+        {
+          t: jwt.token,
+        },
+        userData
+      )
+        .then((data) => {
+          if (data && data.error) {
+            setValues({ ...values, error: data.error });
+          } else {
+            setValues({ ...values, redirectToProfile: true });
+          }
+        })
+        .finally(() => {
+          setDisableSubmitButton(false);
+        });
+    }
   };
 
   const handleChange = (name) => (event) => {
@@ -210,6 +218,7 @@ export default function EditProfile({ match }) {
         <Button
           color="primary"
           variant="contained"
+          disabled={disableSubmitButton}
           onClick={clickSubmit}
           className={classes.submit}
         >

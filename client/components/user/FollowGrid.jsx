@@ -30,6 +30,10 @@ const useStyles = makeStyles((theme) => ({
     textAlign: "center",
     marginTop: 10,
   },
+  link: {
+    textDecoration: "none",
+    color: "#000",
+  },
 }));
 
 export default function FollowGrid(props) {
@@ -41,7 +45,7 @@ export default function FollowGrid(props) {
         {props.people.map((person, i) => {
           return (
             <GridListTile style={{ height: 120 }} key={i + person._id}>
-              <Link to={"/user/" + person._id}>
+              <Link className={classes.link} to={"/user/" + person._id}>
                 <Avatar
                   src={"/api/users/photo/" + person._id}
                   className={classes.bigAvatar}

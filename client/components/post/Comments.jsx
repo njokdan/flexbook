@@ -10,6 +10,8 @@ import CardHeader from "@material-ui/core/CardHeader";
 import TextField from "@material-ui/core/TextField";
 import Avatar from "@material-ui/core/Avatar";
 import Icon from "@material-ui/core/Icon";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 
 const useStyles = makeStyles((theme) => ({
   cardHeader: {
@@ -37,18 +39,32 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "1.6em",
     verticalAlign: "middle",
     cursor: "pointer",
+    padding: 0,
+  },
+  linkText: {
+    textDecoration: "none",
+    color: "#000",
+    fontWeight: 700,
+  },
+  deleteIconComment: {
+    width: 20,
   },
 }));
 
 export default function Comments(props) {
   const classes = useStyles();
+  const [disableCommenting, setDisableCommenting] = useState(false);
+  const [disableDeleteButton, setDisableDeleteButton] = useState(false);
   const [text, setText] = useState("");
   const jwt = auth.isAuthenticated();
+
   const handleChange = (event) => {
     setText(event.target.value);
   };
+
   const addComment = (event) => {
     if (event.keyCode == 13 && event.target.value) {
+      setDisableCommenting(true);
       event.preventDefault();
       commentOnPost(
         {
@@ -59,14 +75,18 @@ export default function Comments(props) {
         },
         props.postId,
         { text: text }
-      ).then((data) => {
-        if (data.error) {
-          console.log(data.error);
-        } else {
-          setText("");
-          props.updateComments(data.comments);
-        }
-      });
+      )
+        .then((data) => {
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            setText("");
+            props.updateComments(data.comments);
+          }
+        })
+        .finally(() => {
+          setDisableCommenting(false);
+        });
     }
   };
 
@@ -80,30 +100,40 @@ export default function Comments(props) {
       },
       props.postId,
       comment
-    ).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        props.updateComments(data.comments);
-      }
-    });
+    )
+      .then((data) => {
+        if (data.error) {
+          console.log(data.error);
+        } else {
+          props.updateComments(data.comments);
+        }
+      })
+      .finally(() => {
+        setDisableDeleteButton(false);
+      });
   };
 
   const commentBody = (item) => {
     return (
       <p className={classes.commentText}>
-        <Link to={"/user/" + item.postedBy._id}>{item.postedBy.name}</Link>
+        <Link className={classes.linkText} to={"/user/" + item.postedBy._id}>
+          {item.postedBy.name}
+        </Link>
         <br />
-        {item.text}
+        <span>{item.text}</span>
         <span className={classes.commentDate}>
           {new Date(item.created).toDateString()} |
           {auth.isAuthenticated().user._id === item.postedBy._id && (
-            <Icon
-              onClick={deleteComment(item)}
+            <IconButton
+              disabled={disableDeleteButton}
+              onClick={(e) => {
+                setDisableDeleteButton(true);
+                deleteComment(item)(e);
+              }}
               className={classes.commentDelete}
             >
-              delete
-            </Icon>
+              <DeleteIcon className={classes.deleteIconComment} />
+            </IconButton>
           )}
         </span>
       </p>
@@ -121,11 +151,16 @@ export default function Comments(props) {
         }
         title={
           <TextField
-            onKeyDown={addComment}
-            multiline
+            onKeyDown={
+              disableCommenting
+                ? null
+                : (e) => {
+                    addComment(e);
+                  }
+            }
             value={text}
             onChange={handleChange}
-            placeholder="Write something ..."
+            placeholder="Write something (press Enter to post)"
             className={classes.commentField}
             margin="normal"
           />

@@ -62,9 +62,8 @@ export default ({ history }) => {
               />
               <CardContent>
                 <Typography variant="body2" component="p">
-                  Welcome to FlexBook. <br></br>Where people flex for the
-                  validation of other random people. <br></br>The more you Flex
-                  - The Better you Feel.
+                  Welcome to FlexBook. <br></br>The more you Flex - The Better
+                  you Feel.
                 </Typography>
               </CardContent>
             </Card>

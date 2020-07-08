@@ -18,13 +18,13 @@ import postRoutes from "./routes/post.routes";
 // Config for developement - production config in .env
 import config from "../config/config";
 
-// import devBundle from "./devBundle"; //comment out when building the application code for production
+import devBundle from "./devBundle"; //comment out when building the application code for production
 
 const CURRENT_WORKING_DIR = process.cwd();
 
 const app = express();
 
-// devBundle.compile(app); //comment out when building the application code for production
+devBundle.compile(app); //comment out when building the application code for production
 
 // Middleware
 app.use(logger("dev"));

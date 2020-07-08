@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
     backgroundColor: "rgba(0, 0, 0, 0.06)",
   },
-  linkText: { textDecoration: "none", color: "#000" },
+  linkText: { textDecoration: "none", color: "#000", fontWeight: 700 },
   cardContent: {
     backgroundColor: "white",
     padding: `${theme.spacing(2)}px 0px`,
@@ -54,12 +54,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Post(props) {
+  const [disableDeletePostButton, setdisableDeletePostButton] = useState(false);
+  const [disableLikeButton, setDisableLikeButton] = useState(false);
   const classes = useStyles();
   const jwt = auth.isAuthenticated();
+
   const checkLike = (likes) => {
     let match = likes.indexOf(jwt.user._id) !== -1;
     return match;
   };
+
   const [values, setValues] = useState({
     like: checkLike(props.post.likes),
     likes: props.post.likes.length,
@@ -76,22 +80,34 @@ export default function Post(props) {
   }, []);
 
   const clickLike = () => {
-    let callApi = values.like ? unlikePost : likePost;
-    callApi(
-      {
-        userId: jwt.user._id,
-      },
-      {
-        t: jwt.token,
-      },
-      props.post._id
-    ).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        setValues({ ...values, like: !values.like, likes: data.likes.length });
-      }
-    });
+    if (!disableLikeButton) {
+      setDisableLikeButton(true);
+
+      let callApi = values.like ? unlikePost : likePost;
+      callApi(
+        {
+          userId: jwt.user._id,
+        },
+        {
+          t: jwt.token,
+        },
+        props.post._id
+      )
+        .then((data) => {
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            setValues({
+              ...values,
+              like: !values.like,
+              likes: data.likes.length,
+            });
+          }
+        })
+        .finally(() => {
+          setDisableLikeButton(false);
+        });
+    }
   };
 
   const updateComments = (comments) => {
@@ -99,20 +115,27 @@ export default function Post(props) {
   };
 
   const deletePost = () => {
-    removePost(
-      {
-        postId: props.post._id,
-      },
-      {
-        t: jwt.token,
-      }
-    ).then((data) => {
-      if (data.error) {
-        console.log(data.error);
-      } else {
-        props.onRemove(props.post);
-      }
-    });
+    if (!disableDeletePostButton) {
+      setdisableDeletePostButton(true);
+      removePost(
+        {
+          postId: props.post._id,
+        },
+        {
+          t: jwt.token,
+        }
+      )
+        .then((data) => {
+          if (data.error) {
+            console.log(data.error);
+          } else {
+            props.onRemove(props.post);
+          }
+        })
+        .finally(() => {
+          setdisableDeletePostButton(false);
+        });
+    }
   };
 
   return (

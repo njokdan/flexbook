@@ -1,25 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { unfollowUser, followUser } from "../../api/user.api";
 
 import Button from "@material-ui/core/Button";
 
 export default function FollowProfileButton(props) {
+  const [disableButton, setDisableButton] = useState(false);
+
   const followClick = () => {
-    props.onButtonClick(followUser);
+    if (!disableButton) {
+      setDisableButton(true);
+      props.onButtonClick(followUser).finally(() => {
+        setDisableButton(false);
+      });
+    }
   };
+
   const unfollowClick = () => {
-    props.onButtonClick(unfollowUser);
+    if (!disableButton) {
+      setDisableButton(true);
+      props.onButtonClick(unfollowUser).finally(() => {
+        setDisableButton(false);
+      });
+    }
   };
 
   return (
     <div>
       {props.following ? (
-        <Button variant="contained" color="secondary" onClick={unfollowClick}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={unfollowClick}
+          disabled={disableButton}
+        >
           Unfollow
         </Button>
       ) : (
-        <Button variant="contained" color="primary" onClick={followClick}>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={followClick}
+          disabled={disableButton}
+        >
           Follow
         </Button>
       )}
